@@ -1,6 +1,7 @@
 TARGET = QtMagicBlueLed
 
 CONFIG += c++11
+
 QT = core bluetooth
 
 QT += core-private
