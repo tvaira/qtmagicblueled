@@ -1,14 +1,10 @@
 #include "qmagicblueledclient.h"
 #include "qmagicblueled.h"
 
-//#include <QtCore/QLoggingCategory>
-//#include <QtCore/QUuid>
 #include <QtBluetooth/QBluetoothDeviceInfo>
 #include <QtCore/QtEndian>
 
 QT_BEGIN_NAMESPACE
-
-//Q_LOGGING_CATEGORY(lcMqttClient, "qt.mqtt.client")
 
 QMagicBlueLedClient::QMagicBlueLedClient(QObject *parent) : QObject(parent), m_discoveryAgent(nullptr), m_controller(nullptr), m_service(nullptr), m_etatConnexion(false), m_etatRecherche(false), m_connexionErreur(false), m_magicBlueLedDetecte(false)
 {
@@ -144,9 +140,29 @@ void QMagicBlueLedClient::gererNotification(bool notification)
     }
 }
 
-QList<QObject*> QMagicBlueLedClient::getMagicBlueLed()
+QList<MagicBlueLed*> QMagicBlueLedClient::getMagicBlueLed()
 {
     return m_devices;
+}
+
+bool QMagicBlueLedClient::etatConnexion() const
+{
+    return m_etatConnexion;
+}
+
+bool QMagicBlueLedClient::etatRecherche() const
+{
+    return m_etatRecherche;
+}
+
+bool QMagicBlueLedClient::connexionErreur() const
+{
+    return m_connexionErreur;
+}
+
+bool QMagicBlueLedClient::magicBlueLedDetecte() const
+{
+    return m_magicBlueLedDetecte;
 }
 
 void QMagicBlueLedClient::ajouterMagicBlueLed(const QBluetoothDeviceInfo &info)

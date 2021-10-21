@@ -2,6 +2,7 @@
 #define QTMAGICBLUELEDCLIENT_H
 
 #include <QtMagicBlueLed/qmagicblueledglobal.h>
+#include <QtMagicBlueLed/qmagicblueled.h>
 
 #include <QtCore/QIODevice>
 #include <QtCore/QObject>
@@ -17,16 +18,12 @@ QT_BEGIN_NAMESPACE
 
 class Q_MAGICBLUELED_EXPORT QMagicBlueLedClient : public QObject
 {
-public:
-
-
-private:
     Q_OBJECT
     Q_PROPERTY(bool magicBlueLedDetecte MEMBER m_magicBlueLedDetecte NOTIFY detecte)
     Q_PROPERTY(bool etatRecherche MEMBER m_etatRecherche NOTIFY recherche)
     Q_PROPERTY(bool etatConnexion MEMBER m_etatConnexion NOTIFY connecte)
     Q_PROPERTY(bool connexionErreur MEMBER m_connexionErreur NOTIFY erreur)
-    Q_PROPERTY(QList<QObject*> listeMagicBlueLed READ getMagicBlueLed NOTIFY magicBlueLedUpdated)
+    Q_PROPERTY(QList<MagicBlueLed*> listeMagicBlueLed READ getMagicBlueLed NOTIFY magicBlueLedUpdated)
 
 public:
     explicit QMagicBlueLedClient(QObject *parent = nullptr);
@@ -41,7 +38,11 @@ public:
     Q_INVOKABLE void write(int rouge, int vert, int bleu, int white=0);
     Q_INVOKABLE void write(bool etat);
     Q_INVOKABLE void gererNotification(bool notification);
-    QList<QObject*> getMagicBlueLed();
+    QList<MagicBlueLed*> getMagicBlueLed();
+    bool etatConnexion() const;
+    bool etatRecherche() const;
+    bool connexionErreur() const;
+    bool magicBlueLedDetecte() const;
 
 Q_SIGNALS:
     void connecte();
@@ -64,7 +65,7 @@ public Q_SLOTS:
     void connecteErreur(QLowEnergyController::Error);
 
 private:
-    QList<QObject*>                  m_devices;
+    QList<MagicBlueLed*>                  m_devices;
     QBluetoothDeviceDiscoveryAgent  *m_discoveryAgent;
     QLowEnergyController            *m_controller;
     QLowEnergyService               *m_service;
@@ -73,9 +74,6 @@ private:
     bool                             m_etatRecherche;
     bool                             m_connexionErreur;
     bool                             m_magicBlueLedDetecte;
-
-    //Q_DISABLE_COPY(QMqttClient)
-    //Q_DECLARE_PRIVATE(QMqttClient)
 };
 
 QT_END_NAMESPACE

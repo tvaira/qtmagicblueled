@@ -9,17 +9,19 @@ QT_BEGIN_NAMESPACE
 class Q_MAGICBLUELED_EXPORT MagicBlueLed : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString nom READ getNom NOTIFY magicBlueLedChanged)
-    Q_PROPERTY(QString adresseMAC READ getAdresseMAC NOTIFY magicBlueLedChanged)
+    Q_PROPERTY(QString nom READ nom NOTIFY magicBlueLedChanged)
+    Q_PROPERTY(QString adresseMAC READ adresseMAC NOTIFY magicBlueLedChanged)
 
 public:
     explicit MagicBlueLed(QString nom, QString adresseMAC, QObject *parent = nullptr);
-    QString getNom() const;
-    QString getAdresseMAC() const;
+    MagicBlueLed(const MagicBlueLed& magicBlueLed);
+    MagicBlueLed& operator=(const MagicBlueLed& magicBlueLed);
+    QString nom() const;
+    QString adresseMAC() const;
 
 private:
-    QString nom;
-    QString adresseMAC;
+    QString _nom;
+    QString _adresseMAC;
 
 signals:
     void magicBlueLedChanged();
