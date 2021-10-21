@@ -9,6 +9,10 @@
 #include <QtBluetooth/QBluetoothDeviceDiscoveryAgent>
 #include <QtBluetooth/QLowEnergyController>
 
+#define Q_MAGICBLUELED_SERVICE_UUID         "{0000ffe5-0000-1000-8000-00805f9b34fb}"
+#define Q_MAGICBLUELED_CHARACTERISTIC_UUID  "{0000ffe9-0000-1000-8000-00805f9b34fb}"
+#define Q_MAGICBLUELED_MAX_SIZE             20 // 20 octets de données max
+
 QT_BEGIN_NAMESPACE
 
 class Q_MAGICBLUELED_EXPORT QMagicBlueLedClient : public QObject
