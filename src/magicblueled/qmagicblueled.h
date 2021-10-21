@@ -1,6 +1,7 @@
 #ifndef QMAGICBLUELED_H
 #define QMAGICBLUELED_H
 
+#include <QtMagicBlueLed/qmagicblueledglobal.h>
 #include <QtCore/QObject>
 
 QT_BEGIN_NAMESPACE

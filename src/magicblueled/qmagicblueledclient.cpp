@@ -10,7 +10,7 @@ QT_BEGIN_NAMESPACE
 
 //Q_LOGGING_CATEGORY(lcMqttClient, "qt.mqtt.client")
 
-QMagicBlueLedClient::QMagicBlueLedClient() : m_discoveryAgent(nullptr), m_controller(nullptr), m_service(nullptr), m_etatConnexion(false), m_etatRecherche(false), m_connexionErreur(false), m_magicBlueLedDetecte(false)
+QMagicBlueLedClient::QMagicBlueLedClient(QObject *parent) : QObject(parent), m_discoveryAgent(nullptr), m_controller(nullptr), m_service(nullptr), m_etatConnexion(false), m_etatRecherche(false), m_connexionErreur(false), m_magicBlueLedDetecte(false)
 {
     //qDebug() << Q_FUNC_INFO;
     m_discoveryAgent = new QBluetoothDeviceDiscoveryAgent();
@@ -156,7 +156,7 @@ void QMagicBlueLedClient::ajouterMagicBlueLed(const QBluetoothDeviceInfo &info)
     {
         //qDebug() << Q_FUNC_INFO << "appareil ble" << info.name() << info.address().toString();
         // Magic Blue ?
-        if(info.name().startsWith("LEDBLE"))
+        if(info.name().startsWith(QString::fromUtf8("LEDBLE")))
         {
             //qDebug() << Q_FUNC_INFO << "magic blue ble" << info.name() << info.address().toString();
             MagicBlueLed *magicBlueLed = new MagicBlueLed(info.name(), info.address().toString(), this);
@@ -180,6 +180,7 @@ void QMagicBlueLedClient::rechercheTerminee()
 
 void QMagicBlueLedClient::rechercheErreur(QBluetoothDeviceDiscoveryAgent::Error erreur)
 {
+    Q_UNUSED(erreur)
     /*if(erreur == QBluetoothDeviceDiscoveryAgent::PoweredOffError)
     {
         qDebug() << Q_FUNC_INFO << "bluetooth non activé !";
@@ -240,12 +241,14 @@ void QMagicBlueLedClient::ajouterService(QBluetoothUuid serviceUuid)
 
 void QMagicBlueLedClient::serviceCharacteristicChanged(const QLowEnergyCharacteristic &c, const QByteArray &value)
 {
+    Q_UNUSED(c)
+    Q_UNUSED(value)
     //qDebug() << Q_FUNC_INFO << c.uuid().toString() << value;
 }
 
 void QMagicBlueLedClient::serviceDetailsDiscovered(QLowEnergyService::ServiceState newState)
 {
-    Q_UNUSED(newState)
+    //Q_UNUSED(newState)
 
     // décourverte ?
     if(newState != QLowEnergyService::ServiceDiscovered)
@@ -289,6 +292,7 @@ void QMagicBlueLedClient::magicBlueLedDeconnecte()
 
 void QMagicBlueLedClient::connecteErreur(QLowEnergyController::Error error)
 {
+    Q_UNUSED(error)
     //qDebug() << Q_FUNC_INFO << error;
     m_etatConnexion = false;
     m_connexionErreur = true;
