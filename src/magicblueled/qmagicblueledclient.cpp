@@ -52,13 +52,13 @@ void QMagicBlueLedClient::arreter()
     }
 }
 
-void QMagicBlueLedClient::start(QString adresse)
+void QMagicBlueLedClient::connecter(QString adresse)
 {
     //qDebug() << Q_FUNC_INFO << adresse;
     connecterMagicBlueLed(adresse);
 }
 
-void QMagicBlueLedClient::stop()
+void QMagicBlueLedClient::deconnecter()
 {
     //qDebug() << Q_FUNC_INFO;
     if(m_controller)
@@ -68,6 +68,16 @@ void QMagicBlueLedClient::stop()
 void QMagicBlueLedClient::read()
 {
 
+}
+
+void QMagicBlueLedClient::allumer()
+{
+    this->write(true);
+}
+
+void QMagicBlueLedClient::eteindre()
+{
+    this->write(false);
 }
 
 void QMagicBlueLedClient::write(const QByteArray &data)
@@ -161,6 +171,16 @@ bool QMagicBlueLedClient::connexionErreur() const
 }
 
 bool QMagicBlueLedClient::magicBlueLedDetecte() const
+{
+    return m_magicBlueLedDetecte;
+}
+
+bool QMagicBlueLedClient::estConnecte() const
+{
+    return m_etatConnexion;
+}
+
+bool QMagicBlueLedClient::estDetecte() const
 {
     return m_magicBlueLedDetecte;
 }

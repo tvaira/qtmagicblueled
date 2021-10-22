@@ -17,20 +17,20 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    magicBlueLedClient->write(false);
+    magicBlueLedClient->eteindre();
     qDebug() << Q_FUNC_INFO;
 }
 
 void MainWindow::connecte()
 {
     qDebug() << Q_FUNC_INFO << magicBlueLedClient->etatConnexion();
-    if(magicBlueLedClient->etatConnexion())
+    if(magicBlueLedClient->estConnecte())
     {
-        magicBlueLedClient->write(true);
+        magicBlueLedClient->allumer();
     }
     else
     {
-        magicBlueLedClient->write(false);
+        magicBlueLedClient->eteindre();
     }
 }
 
@@ -52,13 +52,13 @@ void MainWindow::detecte()
 void MainWindow::magicBlueLedUpdated()
 {
     qDebug() << Q_FUNC_INFO;
-    if(magicBlueLedClient->magicBlueLedDetecte())
+    if(magicBlueLedClient->estDetecte())
     {
         QList<MagicBlueLed*> liste = magicBlueLedClient->getMagicBlueLed();
         for (int i = 0; i < liste.size(); ++i)
         {
             qDebug() << Q_FUNC_INFO << liste[i]->nom() << liste[i]->adresseMAC();
-            magicBlueLedClient->start(liste[i]->adresseMAC());
+            magicBlueLedClient->connecter(liste[i]->adresseMAC());
         }
     }
 }

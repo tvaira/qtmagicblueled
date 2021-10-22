@@ -31,9 +31,11 @@ public:
 
     Q_INVOKABLE void rechercher();
     Q_INVOKABLE void arreter();
-    Q_INVOKABLE void start(QString adresse);
-    Q_INVOKABLE void stop();
+    Q_INVOKABLE void connecter(QString adresse);
+    Q_INVOKABLE void deconnecter();
     Q_INVOKABLE void read();
+    Q_INVOKABLE void allumer();
+    Q_INVOKABLE void eteindre();
     Q_INVOKABLE void write(const QByteArray &data);
     Q_INVOKABLE void write(int rouge, int vert, int bleu, int white=0);
     Q_INVOKABLE void write(bool etat);
@@ -43,6 +45,8 @@ public:
     bool etatRecherche() const;
     bool connexionErreur() const;
     bool magicBlueLedDetecte() const;
+    bool estConnecte() const;
+    bool estDetecte() const;
 
 Q_SIGNALS:
     void connecte();
@@ -65,7 +69,7 @@ public Q_SLOTS:
     void connecteErreur(QLowEnergyController::Error);
 
 private:
-    QList<MagicBlueLed*>                  m_devices;
+    QList<MagicBlueLed*>             m_devices;
     QBluetoothDeviceDiscoveryAgent  *m_discoveryAgent;
     QLowEnergyController            *m_controller;
     QLowEnergyService               *m_service;
