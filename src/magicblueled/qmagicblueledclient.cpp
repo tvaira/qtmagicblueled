@@ -26,8 +26,12 @@ QMagicBlueLedClient::~QMagicBlueLedClient()
     //qDebug() << Q_FUNC_INFO;
 }
 
-void QMagicBlueLedClient::rechercher()
+void QMagicBlueLedClient::rechercher(QString nom, QString adresseMAC)
 {
+    if(!nom.isEmpty())
+        m_nomRecherche = nom;
+    if(!adresseMAC.isEmpty())
+        m_adresseMACRecherche = adresseMAC;
     qDeleteAll(m_devices);
     m_devices.clear();
     m_magicBlueLedDetecte = false;
@@ -190,9 +194,9 @@ void QMagicBlueLedClient::ajouterMagicBlueLed(const QBluetoothDeviceInfo &info)
     // Bluetooth Low Energy ?
     if(info.coreConfigurations() & QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
     {
-        //qDebug() << Q_FUNC_INFO << "appareil ble" << info.name() << info.address().toString();
+        //qDebug() << Q_FUNC_INFO << info.name() << info.address().toString();
         // Magic Blue ?
-        if(info.name().startsWith(QString::fromUtf8("LEDBLE")))
+        if( (!m_nomRecherche.isEmpty() && info.name().startsWith(m_nomRecherche)) || (!m_adresseMACRecherche.isEmpty() && info.address().toString() == m_adresseMACRecherche) )
         {
             //qDebug() << Q_FUNC_INFO << "magic blue ble" << info.name() << info.address().toString();
             MagicBlueLed *magicBlueLed = new MagicBlueLed(info.name(), info.address().toString(), this);
@@ -247,7 +251,7 @@ void QMagicBlueLedClient::connecterMagicBlueLed(const QString &adresseServeur)
 
     //qDebug() << Q_FUNC_INFO << "demande de connexion";
     m_connexionErreur = false;
-    emit erreur();
+    emit erreurUpdated();
     m_controller->setRemoteAddressType(QLowEnergyController::PublicAddress);
     m_controller->connectToDevice();
 }
@@ -286,7 +290,7 @@ void QMagicBlueLedClient::serviceDetailsDiscovered(QLowEnergyService::ServiceSta
 {
     //Q_UNUSED(newState)
 
-    // décourverte ?
+    // découverte ?
     if(newState != QLowEnergyService::ServiceDiscovered)
     {
         return;
@@ -328,12 +332,12 @@ void QMagicBlueLedClient::magicBlueLedDeconnecte()
 
 void QMagicBlueLedClient::connecteErreur(QLowEnergyController::Error error)
 {
-    Q_UNUSED(error)
-    //qDebug() << Q_FUNC_INFO << error;
+    //Q_UNUSED(error)
+    qDebug() << Q_FUNC_INFO << error;
     m_etatConnexion = false;
     m_connexionErreur = true;
     emit connecte();
-    emit erreur();
+    emit erreurUpdated();
 }
 
 QT_END_NAMESPACE

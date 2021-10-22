@@ -6,6 +6,7 @@
 
 #include <QtCore/QIODevice>
 #include <QtCore/QObject>
+#include <QtCore/QString>
 #include <QtCore/QSharedPointer>
 #include <QtBluetooth/QBluetoothDeviceDiscoveryAgent>
 #include <QtBluetooth/QLowEnergyController>
@@ -22,14 +23,14 @@ class Q_MAGICBLUELED_EXPORT QMagicBlueLedClient : public QObject
     Q_PROPERTY(bool magicBlueLedDetecte MEMBER m_magicBlueLedDetecte NOTIFY detecte)
     Q_PROPERTY(bool etatRecherche MEMBER m_etatRecherche NOTIFY recherche)
     Q_PROPERTY(bool etatConnexion MEMBER m_etatConnexion NOTIFY connecte)
-    Q_PROPERTY(bool connexionErreur MEMBER m_connexionErreur NOTIFY erreur)
+    Q_PROPERTY(bool connexionErreur MEMBER m_connexionErreur NOTIFY erreurUpdated)
     Q_PROPERTY(QList<MagicBlueLed*> listeMagicBlueLed READ getMagicBlueLed NOTIFY magicBlueLedUpdated)
 
 public:
     explicit QMagicBlueLedClient(QObject *parent = nullptr);
     ~QMagicBlueLedClient();
 
-    Q_INVOKABLE void rechercher();
+    Q_INVOKABLE void rechercher(QString nom=QString::fromUtf8("LEDBLE"), QString adresseMAC=QString::fromUtf8(""));
     Q_INVOKABLE void arreter();
     Q_INVOKABLE void connecter(QString adresse);
     Q_INVOKABLE void deconnecter();
@@ -51,7 +52,7 @@ public:
 Q_SIGNALS:
     void connecte();
     void recherche();
-    void erreur();
+    void erreurUpdated();
     void detecte();
     void magicBlueLedUpdated();
 
@@ -78,6 +79,8 @@ private:
     bool                             m_etatRecherche;
     bool                             m_connexionErreur;
     bool                             m_magicBlueLedDetecte;
+    QString                          m_nomRecherche;
+    QString                          m_adresseMACRecherche;
 };
 
 QT_END_NAMESPACE
