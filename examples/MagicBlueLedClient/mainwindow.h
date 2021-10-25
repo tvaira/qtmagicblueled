@@ -18,9 +18,12 @@ private:
 public slots:
     void connecte();
     void recherche();
+    void serviceCommande();
+    void serviceEtat();
     void erreur();
     void detecte();
     void magicBlueLedUpdated();
+    void etatChanged(const QByteArray &datas);
 };
 
 #endif // MAINWINDOW_H
